@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use Illuminate\Support\Facades\Auth;
 
 // Route for the homepage (redirecting to books index)
 Route::get('/', function () {
@@ -18,3 +19,7 @@ Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.
 
 // You can add authentication routes here if needed for login, registration, etc.
 // Example: Auth::routes(); (For Laravel's built-in authentication routes)
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
