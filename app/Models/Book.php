@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'author',
+        'genre',
+        'publication_date',
+    ];
+
+    // Cast the publication_date to a Carbon date instance
+    protected $casts = [
+        'publication_date' => 'date',
+    ];
 }
