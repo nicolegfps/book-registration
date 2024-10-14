@@ -13,33 +13,42 @@
     <a href="{{ route('books.create') }}" class="btn btn-danger mb-3">Add New Book</a>
 
     <table class="table table-striped table-bordered">
-        <thead class="bg-danger text-white">
+    <thead class="bg-danger text-white">
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Publication Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($books as $book)
             <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Publication Date</th>
-                <th>Actions</th>
+                <td>
+                    @if($book->image) <!-- Check if the image exists -->
+                        <img src="{{ asset('storage/images/' . $book->image) }}" alt="Book Image" style="width: 100px; height: auto;"> <!-- Display the image -->
+                    @else
+                        No Image
+                    @endif
+                </td>
+                <td>{{ $book->title }}</td>
+                <td>{{ $book->author }}</td>
+                <td>{{ $book->genre }}</td>
+                <td>{{ \Carbon\Carbon::parse($book->publication_date)->format('Y-m-d') }}</td>
+                <td>
+                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-outline-danger">Edit</a>
+                    <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach($books as $book)
-                <tr>
-                    <td>{{ $book->title }}</td>
-                    <td>{{ $book->author }}</td>
-                    <td>{{ $book->genre }}</td>
-                    <td>{{ $book->publication_date->format('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-outline-danger">Edit</a>
-                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
+
 </div>
 @endsection

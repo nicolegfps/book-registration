@@ -5,16 +5,16 @@
     <h1>Add New Book</h1>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
-    <form action="{{ route('books.store') }}" method="POST">
+    <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group mt-3">
             <label for="title">Title:</label>
@@ -36,15 +36,14 @@
             <input type="date" class="form-control" id="publication_date" name="publication_date"
                 value="{{ old('publication_date') }}">
         </div>
-        <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
 
-            <div class="form-group mt-3">
-                <label for="image">Book Image:</label>
-                <input type="file" name="image" id="image" class="form-control">
-            </div>
+        <div class="form-group mt-3">
+            <label for="image">Book Image:</label>
+            <input type="file" name="image" id="image" class="form-control">
+        </div>
 
-            <button type="submit" class="btn btn-success btn-danger mt-4">Add Book</button>
-        </form>
+        <button type="submit" class="btn btn-success mt-4">Add Book</button>
+    </form>
+
 </div>
 @endsection

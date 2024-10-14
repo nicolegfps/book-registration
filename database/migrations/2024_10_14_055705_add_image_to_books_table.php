@@ -6,18 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up()
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->string('image_path')->nullable();
+            $table->string('image')->nullable();
         });
     }
     
     public function down()
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->dropColumn('image_path');
+            $table->dropColumn('image');
         });
     }
     

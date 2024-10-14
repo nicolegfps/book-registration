@@ -46,7 +46,7 @@
                 <input type="file" name="image" id="image" class="form-control">
             </div>
 
-            <button type="submit" class="btn btn-danger mt-4">Update Book</button>
+            <button type="submit" class="btn btn-success mt-4">Update Book</button>
         </form>
 </div>
 @endsection
