@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="text-danger">Books</h1>
+    <h1 class="text-danger">eBooks</h1>
 
     @if (session('success'))
         <div class="alert alert-success">
