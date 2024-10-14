@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Books</h1>
+        <h1 class="text-danger">Books</h1>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -10,10 +10,10 @@
             </div>
         @endif
 
-        <a href="{{ route('books.create') }}" class="btn btn-primary mb-3">Add New Book</a>
+        <a href="{{ route('books.create') }}" class="btn btn-danger mb-3">Add New Book</a>
 
-        <table class="table table-striped">
-            <thead>
+        <table class="table table-striped table-bordered">
+            <thead class="bg-danger text-white">
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
@@ -30,11 +30,11 @@
                         <td>{{ $book->genre }}</td>
                         <td>{{ $book->publication_date->format('Y-m-d') }}</td>
                         <td>
-                            <a href="{{ route('books.edit', $book) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-outline-danger">Edit</a>
+                            <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
