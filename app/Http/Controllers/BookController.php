@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
     // Display books
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
-        return view('books.index', compact('books'));
+        $sortOrder = $request->get('sort', 'asc');
+        $books = Book::orderBy('publication_date', $sortOrder)->get();
+    
+        return view('books.index', compact('books', 'sortOrder'));
     }
-
     // Show form for creating a new book
     public function create()
     {
