@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
+
 class BookController extends Controller
 {
     // Display a listing of the books
@@ -29,10 +30,21 @@ class BookController extends Controller
             'author' => 'required|max:255',              // Author is required and max 255 characters
             'genre' => 'required|max:255',                // Genre is required and max 255 characters
             'publication_date' => 'required|date',       // Publication date is required and must be a valid date
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+        }
 
         // Create a new book using the validated data
-        Book::create($request->all());
+        Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'genre' => $request->genre,
+            'publication_date' => $request->publication_date,
+            'image_path' => $imagePath,
+        ]);
 
         // Redirect back to the books list with a success message
         return redirect()->route('books.index')->with('success', 'Book added successfully.');
@@ -68,4 +80,6 @@ class BookController extends Controller
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
     }
+
+
 }
