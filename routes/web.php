@@ -15,6 +15,7 @@ Route::post('/books', [BookController::class, 'store'])->name('books.store');   
 Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');  // Edit
 Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');   // Update
 Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy'); // Delete
+Route::resource('books', BookController::class); //Sorting
 
 Auth::routes();
 
