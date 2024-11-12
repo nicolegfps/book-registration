@@ -7,54 +7,58 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    // Display books
     public function index(Request $request)
     {
         $sortOrder = $request->get('sort', 'asc');
         $books = Book::orderBy('publication_date', $sortOrder)->get();
-    
         return view('books.index', compact('books', 'sortOrder'));
     }
-    // Show form for creating a new book
+
     public function create()
     {
         return view('books.create');
     }
 
-    // Store book in the database
     public function store(Request $request)
     {
-        // Validation
         $validatedData = $request->validate([
             'title' => 'required|max:255',
+            'image' => 'required|mimes:png,jpg,jpeg',
             'author' => 'required|max:255',
             'genre' => 'required|max:255',
             'publication_date' => 'required|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle the image upload
+        $filename = null;
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $validatedData['image'] = basename($imagePath); // Store the image filename
+
+            $filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+
+            $path = $request->file('image')->storeAs('images', $filename, 'public');
         }
 
-        // Create book with the validated data
-        Book::create($validatedData);
+
+        Book::create([
+            'title' => $request->title,
+            'image' => 'storage/images/' . $filename,
+            'author' => $request->author,
+            'genre' => $request->genre,
+            'publication_date' => $request->publication_date,
+        ]);
 
         return redirect()->route('books.index')->with('success', 'Book added successfully.');
     }
 
-    // Show form for editing
+
+
     public function edit(Book $book)
     {
         return view('books.edit', compact('book'));
     }
 
-    // Update book in the database
     public function update(Request $request, Book $book)
     {
-        // Validatiom
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'author' => 'required|max:255',
@@ -63,19 +67,20 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $validatedData['image'] = basename($imagePath); // Store the image filename
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/images', $filename);
+            $validatedData['image'] = 'storage/images/' . $filename;
+        } else {
+            $validatedData['image'] = $book->image;
         }
 
-        // Update book with the validated data
         $book->update($validatedData);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully.');
     }
 
-    // Remove book
     public function destroy(Book $book)
     {
         $book->delete();
