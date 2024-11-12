@@ -22,24 +22,23 @@
                 <th>Genre</th>
                 <th>
                     Publication Date
-
                     <a href="{{ route('books.index', ['sort' => 'asc']) }}" class="{{ $sortOrder === 'asc' ? 'active' : '' }}">↑</a>
                     <a href="{{ route('books.index', ['sort' => 'desc']) }}" class="{{ $sortOrder === 'desc' ? 'active' : '' }}">↓</a>
                 </th>
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach($books as $book)
             <tr>
                 <td>
-                    @if($book->image)
+                    @if($book->image && file_exists(public_path('storage/images/' . basename($book->image))))
                     <img src="{{ asset('storage/images/' . basename($book->image)) }}" alt="{{ $book->title }}" style="width: 100px; height: auto;">
                     @else
                     No Image
                     @endif
                 </td>
-
                 <td>{{ $book->title }}</td>
                 <td>{{ $book->author }}</td>
                 <td>{{ $book->genre }}</td>
@@ -55,6 +54,7 @@
             </tr>
             @endforeach
         </tbody>
+        
     </table>
 </div>
 @endsection

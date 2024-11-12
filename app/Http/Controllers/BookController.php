@@ -30,14 +30,10 @@ class BookController extends Controller
         ]);
 
         $filename = null;
-
         if ($request->hasFile('image')) {
-
             $filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
-
             $path = $request->file('image')->storeAs('images', $filename, 'public');
         }
-
 
         Book::create([
             'title' => $request->title,
@@ -49,8 +45,6 @@ class BookController extends Controller
 
         return redirect()->route('books.index')->with('success', 'Book added successfully.');
     }
-
-
 
     public function edit(Book $book)
     {
@@ -70,12 +64,12 @@ class BookController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/images', $filename);
+            $path = $request->file('image')->storeAs('images', $filename, 'public');
             $validatedData['image'] = 'storage/images/' . $filename;
         } else {
             $validatedData['image'] = $book->image;
         }
-
+        
         $book->update($validatedData);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully.');
